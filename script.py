@@ -280,8 +280,26 @@ class NewsCollectorService:
 # Ponto de entrada / exemplo de uso
 # ---------------------------------------------------------------------------
 
+# def main() -> None:
+#     """Demonstra o uso do :class:`NewsCollectorService` com as implementações padrão."""
+
+#     service = NewsCollectorService(
+#         fetcher=GoogleNewsFetcher(lang="pt", country="BR"),
+#         decoder=GoogleNewsUrlDecoder(interval=1),
+#         extractor=NewspaperArticleExtractor(language="pt"),
+#         delay=2.0,
+#     )
+
+#     articles = service.collect(query="PETROBRAS", when="24h", limit=5)
+
+#     for article in articles:
+#         print(f"\n{'='*60}")
+#         print(f"Título  : {article.title}")
+#         print(f"URL real: {article.real_url}")
+#         print(f"Prévia  :\n{article.preview}")
+
 def main() -> None:
-    """Demonstra o uso do :class:`NewsCollectorService` com as implementações padrão."""
+    """Demonstra busca de perfis do LinkedIn via Google News."""
 
     service = NewsCollectorService(
         fetcher=GoogleNewsFetcher(lang="pt", country="BR"),
@@ -290,13 +308,18 @@ def main() -> None:
         delay=2.0,
     )
 
-    articles = service.collect(query="PETROBRAS", when="24h", limit=5)
+    # Operador "site:" força resultados apenas do LinkedIn
+    articles = service.collect(
+        query='site:linkedin.com/in "Engenheiro de Dados" "São Paulo"',
+        when="7d",
+        limit=5,
+    )
 
     for article in articles:
         print(f"\n{'='*60}")
-        print(f"Título  : {article.title}")
-        print(f"URL real: {article.real_url}")
-        print(f"Prévia  :\n{article.preview}")
+        print(f"Nome/Perfil : {article.title}")
+        print(f"URL LinkedIn: {article.real_url}")
+        print(f"Prévia      :\n{article.preview}")
 
 
 if __name__ == "__main__":
